@@ -1,0 +1,478 @@
+{
+	"info": {
+		"_postman_id": "ee06a326-767a-4808-b527-57b519916cb4",
+		"name": "Test-cases Users Signup",
+		"description": "For Run use the folowing:\n\n1. Specify url in the coolection variables;\n    \n\n2\\. To run tests use one of data.csv:\n\n\\-smoke: data_sm.csv\n\n\\-positive: data_p.csv\n\n\\-negative: data_n.csv",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20538761",
+		"_collection_link": "https://www.postman.com/irina44/workspace/my-workspace/collection/20538761-ee06a326-767a-4808-b527-57b519916cb4?action=share&source=collection_link&creator=20538761"
+	},
+	"item": [
+		{
+			"name": "SignUp validation tests +",
+			"item": [
+				{
+					"name": "Signup validation tests:positive",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Check the environment variable to determine if the iteration should be stopped\r",
+									"if (pm.environment.get(\"stopIteration\") === true) {\r",
+									"    postman.setNextRequest(null);\r",
+									"}\r",
+									"pm.environment.set(\"name\", pm.iterationData.get(\"name\"));\r",
+									"pm.environment.set(\"lastName\", pm.iterationData.get(\"lastName\"));\r",
+									"pm.environment.set(\"email\", pm.iterationData.get(\"email\"));\r",
+									"pm.environment.set(\"password\", pm.iterationData.get(\"password\"));\r",
+									"pm.environment.set(\"repeatPwd\", pm.iterationData.get(\"repeatPwd\"));\r",
+									"\r",
+									"var requestBody = {\r",
+									"    \"name\": pm.variables.get(\"name\"),\r",
+									"    \"lastName\": pm.variables.get(\"lastName\"),\r",
+									"    \"email\": pm.variables.get(\"email\"),\r",
+									"    \"password\": pm.variables.get(\"password\"),\r",
+									"    \"repeatPassword\": pm.variables.get(\"repeatPwd\")\r",
+									"};\r",
+									"\r",
+									"pm.variables.set(\"body\", JSON.stringify(requestBody));\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Successful request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+									"});\r",
+									"\r",
+									"if (jsonData.status === \"error\") {\r",
+									"    console.log(\"The status is not 'ok'. Stopping the iteration run.\");\r",
+									"    pm.environment.set(\"stopIteration\", true);\r",
+									"} else {\r",
+									"    console.log(\"The status is 'ok'. Continuing with the iteration run.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{name}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"repeatPassword\": \"{{repeatPwd}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "To run tests use data.csv\n\npositive: data_p.csv"
+		},
+		{
+			"name": "SignUp validation tests -",
+			"item": [
+				{
+					"name": "Signup validation tests : negative",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name\", pm.iterationData.get(\"name\"));\r",
+									"pm.environment.set(\"lastName\", pm.iterationData.get(\"lastName\"));\r",
+									"pm.environment.set(\"email\", pm.iterationData.get(\"email\"));\r",
+									"pm.environment.set(\"password\", pm.iterationData.get(\"password\"));\r",
+									"pm.environment.set(\"repeatPwd\", pm.iterationData.get(\"repeatPwd\"));\r",
+									"\r",
+									"var requestBody = {\r",
+									"    \"name\": pm.variables.get(\"name\"),\r",
+									"    \"lastName\": pm.variables.get(\"lastName\"),\r",
+									"    \"email\": pm.variables.get(\"email\"),\r",
+									"    \"password\": pm.variables.get(\"password\"),\r",
+									"    \"repeatPassword\": pm.variables.get(\"repeatPwd\")\r",
+									"};\r",
+									"\r",
+									"pm.variables.set(\"body\", JSON.stringify(requestBody));\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"var jsonData = pm.response.json();\r",
+									"var name = pm.iterationData.get(\"name\");\r",
+									"pm.test(\"Successful json schema\", function () {\r",
+									"    pm.expect(jsonData).to.have.property('status','error');\r",
+									"    pm.expect(jsonData).to.have.property('message');\r",
+									"});\r",
+									"pm.test(\"Successful message\", function () {\r",
+									"    if (\r",
+									"        response.message === \"User already exists\" ||\r",
+									"        response.message === \"Email is incorrect\" ||\r",
+									"        response.message === \"\\\"email\\\" is not allowed to be empty\" ||\r",
+									"        response.message === \"Passwords do not match\" ||\r",
+									"        response.message === \"Password has to be from 8 to 15 characters long and contain at least one integer, one capital, and one small letter\" ||\r",
+									"        response.message === \"\\\"password\\\" is not allowed to be empty\" ||\r",
+									"        response.message === \"Name is invalid\" ||\r",
+									"        response.message === \"\\\"name\\\" is not allowed to be empty\" ||\r",
+									"        response.message === \"Name has to be from 2 to 20 characters long\" ||\r",
+									"        response.message === \"Last Name has to be from 2 to 20 characters long\" ||\r",
+									"        response.message === \"\\\"lastName\\\" is not allowed to be empty\"\r",
+									"    ) {\r",
+									"        pm.expect(true).to.be.true;\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Message is wrong\");\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{name}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"repeatPassword\": \"{{repeatPwd}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "To run tests use data.csv\n\nnegative: data_n.csv"
+		},
+		{
+			"name": "Change profile",
+			"item": [
+				{
+					"name": "Signup",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name\", pm.iterationData.get(\"name\"));\r",
+									"pm.environment.set(\"lastName\", pm.iterationData.get(\"lastName\"));\r",
+									"pm.environment.set(\"email\", pm.iterationData.get(\"email\"));\r",
+									"pm.environment.set(\"password\", pm.iterationData.get(\"password\"));\r",
+									"pm.environment.set(\"repeatPwd\", pm.iterationData.get(\"repeatPwd\"));\r",
+									"\r",
+									"var requestBody = {\r",
+									"    \"name\": pm.variables.get(\"name\"),\r",
+									"    \"lastName\": pm.variables.get(\"lastName\"),\r",
+									"    \"email\": pm.variables.get(\"email\"),\r",
+									"    \"password\": pm.variables.get(\"password\"),\r",
+									"    \"repeatPassword\": pm.variables.get(\"repeatPwd\")\r",
+									"};\r",
+									"\r",
+									"pm.variables.set(\"body\", JSON.stringify(requestBody));\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Successful request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+									"});\r",
+									"\r",
+									"if (jsonData.status === \"error\") {\r",
+									"    console.log(\"The status is not 'ok'. Stopping the iteration run.\");\r",
+									"    pm.environment.set(\"stopIteration\", true);\r",
+									"} else {\r",
+									"    console.log(\"The status is 'ok'. Continuing with the iteration run.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{name}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"repeatPassword\": \"{{repeatPwd}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SignIn",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Successful request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"remember\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{qaautourl}}/api/auth/signin",
+							"host": [
+								"{{qaautourl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change profile",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"//console.log(\"Response Body:\", jsonData);\r",
+									"\r",
+									"var expectedName = pm.iterationData.get(\"qaautoName\");\r",
+									"var expectedLastName = pm.iterationData.get(\"qaautoLastName\");\r",
+									"var expectedPhoto = pm.iterationData.get(\"qaautoPhoto\");\r",
+									"var expectedDateBirth = pm.iterationData.get(\"qaautoDateBirth\");\r",
+									"var expectedCountry = pm.iterationData.get(\"qaautoCountry\");\r",
+									"\r",
+									"pm.test(\"Validate profile update\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"ok\");\r",
+									"    pm.expect(jsonData).to.have.property('data');\r",
+									"\r",
+									"   \r",
+									"    if ('data' in jsonData) {\r",
+									"       \r",
+									"        if ('name' in jsonData.data) {\r",
+									"            pm.expect(jsonData.data.name).to.eql(expectedName);\r",
+									"        } else {\r",
+									"            pm.expect.fail(\"Property 'name' not found in the 'data' object\");\r",
+									"        }\r",
+									"\r",
+									"        \r",
+									"        if ('lastName' in jsonData.data) {\r",
+									"            pm.expect(jsonData.data.lastName).to.eql(expectedLastName);\r",
+									"        } else {\r",
+									"            pm.expect.fail(\"Property 'lastName' not found in the 'data' object\");\r",
+									"        }\r",
+									"\r",
+									"        \r",
+									"        if ('photoFilename' in jsonData.data) {\r",
+									"            pm.expect(jsonData.data.photoFilename).to.eql(expectedPhoto);\r",
+									"        } else {\r",
+									"            pm.expect.fail(\"Property 'photoFilename' not found in the 'data' object\");\r",
+									"        }\r",
+									"\r",
+									"        \r",
+									"        if ('dateBirth' in jsonData.data) {\r",
+									"            pm.expect(jsonData.data.dateBirth).to.eql(expectedDateBirth);\r",
+									"        } else {\r",
+									"            pm.expect.fail(\"Property 'dateBirth' not found in the 'data' object\");\r",
+									"        }\r",
+									"\r",
+									"       \r",
+									"        if ('country' in jsonData.data) {\r",
+									"            pm.expect(jsonData.data.country).to.eql(expectedCountry);\r",
+									"        } else {\r",
+									"            pm.expect.fail(\"Property 'country' not found in the 'data' object\");\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"photo\": \"{{qaautoPhoto}}\",\r\n  \"name\": \"{{qaautoName}}\",\r\n  \"lastName\": \"{{qaautoLastName}}\",\r\n  \"dateBirth\": \"{{qaautoDateBirth}}\",\r\n  \"country\": \"{{qaautoCountry}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{qaautourl}}/api/users/profile",
+							"host": [
+								"{{qaautourl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "use data1.csv"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Initialize the environment variable",
+					"pm.environment.set(\"stopIteration\", false);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "qaautourl",
+			"value": "https://qauto.forstudy.space",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "url",
+			"value": "https://qauto2.forstudy.space",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,25 @@
+name,lastName,email,password,repeatPwd
+Sam,Smart,teee3@gmailll.com,12345678Aa,12345678Aa
+Samuel1,Smart2,teee31@gmailll.com,12345678Aa,12345678Aa
+Samuel',Smart',teee32@gmailll.com,12345678Aa,12345678Aa
+Samuel%,Smart%,teee32@gmailll.com,12345678Aa,12345678Aa
+Samuel,,teee1@gmailll.com,12345678Aa,12345678Aa
+,Smart,teee2@gmailll.com,12345678Aa,12345678Aa
+S,Smart,teee5@gmailll.com,12345678Aa,12345678Aa
+Breadly,L,teee7@gmailll.com,12345678Aa,12345678Aa
+Локаль,Україна,teee07@gmailll.com,12345678Aa,12345678Aa
+Leo,Li,teee8gmailll.com,12345678Aa,12345678Aa
+Leo,Li,teee10@,12345678Aa,12345678Aa
+Adam,Sand,,12345678Aa,12345678Aa
+Ada,Sandy,teee9@gmail,12345678Aa,12345678Aa
+Ada,Sandy, teee11 gmailll.com,12345678Aa,12345678Aa
+Ada,Sandy,teeest441#@gmail.com,12345678Aa,12345678Aa
+Ada,Sandy,teeest442@gmail.c,12345678Aa,12345678Aa
+Ada,Sandy,teeest443..@gmail.c,12345678Aa,12345678Aa
+Adaia,Sandy,teee15@gmailll.com,123456a,12345Aa
+Adaia,Sandy,teee121@gmailll.com,qwertyAa,qwertyAa
+Adaia,Sandy,teee121@gmailll.com,1234567a,1234567a
+New,Man,teee12@gmailll.com,12345678Aa,12345677Aa
+Neww,Mann,teee12@gm.com,12345677Aa,12345678Aa
+Newww,Mannn,teee13@gm.com,,12345678Aa
+Newwww,Mannnn,teee14@gm.com,12345678Aa,
